@@ -1,0 +1,64 @@
+@startuml BPMN_Route_Real
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontSize 11
+
+partition "Участник" {
+  start
+  :Открывает «Маршрут для участника конференции»;
+  :Заполняет форму:\n7 тем, уровень, must-attend;
+  :Нажимает «Построить маршрут»;
+  :Ожидает результат;
+  if (Маршрут устроил?) then (Да)
+    :Использует маршрут\nна конференции;
+    stop
+  else (Нет)
+    :Меняет приоритеты;
+  endif
+}
+
+partition "Frontend (React)" {
+  :Валидация формы\n(7 тем, обязательные поля);
+  if (Данные корректны?) then (Нет)
+    :Показать ошибки;
+  else (Да)
+    :POST /api/route;
+    :Показать скелетон;
+    :Получен ответ?;
+    if (Ошибка / таймаут?) then (Да)
+      :Экран ошибки + «Повторить»;
+    else (Нет)
+      :Левая колонка — форма;
+      :Правая колонка — таймлайн;
+      :StrategyBanner + ConflictBadge;
+    endif
+  endif
+}
+
+partition "Backend / Агент (FastAPI)" {
+  :Приём POST /api/route;
+  :Pydantic-валидация\n(7 track, must_attend);
+  if (must_attend\nсуществует?) then (Нет)
+    :422 — несуществующий ID;
+  else (Да)
+    :Загрузка program.json\n(Talk[], ConferenceDay[]);
+  endif
+  :Скоринг докладов:\n+3 главный трек, +1 второстепенный,\n+2 workshop, +100 must_attend,\n−100 avoid, штраф за переходы;
+  :Фиксация must_attend;
+  :Блокировка обеда\n(lunch_start–lunch_end)\nscore = −∞;
+  if (must_attend\nпересекает обед?) then (Да)
+    :conflict_reason =\n«пересекается с обедом»;
+  else (Нет)
+  endif
+  :Жадный выбор по слотам\nс бэктрекингом;
+  if (LLM доступен?) then (Да)
+    :LLM: reason + overall_strategy;
+  else (Нет)
+    :Шаблонные объяснения (fallback);
+  endif
+  :Вставка lunch-слота\nв каждый день;
+  :Формирование Route\n{route_id, days, strategy};
+  :200 OK → Frontend;
+}
+
+@enduml

@@ -1,0 +1,513 @@
+Техническое задание: «Маршрут для участника конференции»
+
+Ниже — финальная версия ТЗ. Изменения относительно предыдущих итераций: название сайта обновлено, добавлены модель данных + ERD, полное описание API со Swagger, BPMN и Sequence-диаграммы в PlantUML, отражающие реальный процесс (включая обед, 7 тем, пастельный дизайн, правую колонку).
+
+1. Общее описание
+
+Название продукта: «Маршрут для участника конференции» (далее — «Маршрут»).
+Контекст: хакатонный прототип для конференции AnalystDays (2 дня, параллельные секции).
+Назначение: по целям участника построить персональное расписание на 2 дня с объяснением, почему выбран каждый доклад, что пропущено и где обед.
+
+Границы: реального API AnalystDays нет — расписание подаётся мок-файлом program.json. LLM опционален (есть fallback на шаблоны).
+
+2. Бизнес-требования (BR)
+
+ID	Требование	Приоритет
+BR-01	Заголовок сайта (шапка, <title>, экран ввода) — строго «Маршрут для участника конференции».	Must
+BR-02	Перечень тем фиксирован, ровно 7: Процессы; Инструменты; Карьера и развитие; UI/UX; Клиенты и кейсы; Архитектура, методологии; Работа с данными.	Must
+BR-03	Визуальный стиль — спокойные пастельные тона (низкая насыщенность, мягкие фоны, без неона и градиентов).	Must
+BR-04	Блок предложения докладов (результат агента) — справа от формы целей на десктопе (≥ 1024 px). На мобильных — стек.	Must
+BR-05	Каждый день в маршруте содержит 1 час на обед. Доклады, пересекающиеся с окном, исключаются (кроме must_attend — тогда conflict_reason).	Must
+3. Модель данных и ERD
+
+3.1. Сущности
+
+Talk (доклад / активность):
+
+Поле	Тип	Описание
+id	string (PK)	talk_101
+title	string	Название
+speaker	string	Спикер
+company	string	Компания
+track	enum (FK)	processes / tools / career / ui_ux / clients_cases / architecture / data
+day	int	1 или 2
+start	time	Начало
+end	time	Конец
+room	string	Секция / зал
+format	enum	talk / workshop / roundtable
+language	enum	ru / en
+tags	string[]	Теги
+description_short	text	Краткое описание
+level	enum	junior / middle / senior / lead
+Track (справочник 7 тем) — фиксированный enum, используется как FK из Talk.track и UserGoals.priorities.
+
+ConferenceDay:
+
+Поле	Тип	Описание
+day	int (PK)	1 / 2
+lunch_start	time	Начало обеда (например, 13:00)
+lunch_end	time	Конец обеда (например, 14:00)
+UserGoals (вход от участника):
+
+Поле	Тип	Описание
+priorities	enum[]	Подмножество 7 тем
+experience_level	enum	junior / middle / senior / lead
+wants_workshops	bool	Нужны ли мастер-классы
+max_walking	enum	low / medium / high
+must_attend	string[] (FK Talk.id)	Обязательные доклады
+avoid	string[] (FK Talk.id)	Антипатии
+language_pref	enum	ru / en / any
+Route (результат):
+
+Поле	Тип	Описание
+route_id	uuid	Идентификатор маршрута
+goals	UserGoals	Входные цели
+days	DaySlot[]	Слоты по дням
+overall_strategy	text	2–3 предложения от агента
+DaySlot (слот маршрута):
+
+Поле	Тип	Описание
+type	enum	talk / lunch / networking
+time	string	10:00–10:40
+talk	Talk | null	Для type = talk
+reason	text	Объяснение агента
+conflicts	string[]	ID пропущенных докладов
+ERD (PlantUML):
+
+plantuml
+@startuml ERD_Route
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam linetype ortho
+
+entity "Track (enum)" as track {
+  * code : string
+  --
+  label : string
+}
+
+entity "ConferenceDay" as day {
+  * day : int
+  --
+  lunch_start : time
+  lunch_end : time
+}
+
+entity "Talk" as talk {
+  * id : string
+  --
+  title : string
+  speaker : string
+  company : string
+  track : Track
+  day : int
+  start : time
+  end : time
+  room : string
+  format : enum
+  language : enum
+  level : enum
+  tags : string[]
+  description_short : text
+}
+
+entity "UserGoals" as goals {
+  * id : uuid
+  --
+  priorities : Track[]
+  experience_level : enum
+  wants_workshops : bool
+  max_walking : enum
+  must_attend : string[]
+  avoid : string[]
+  language_pref : enum
+}
+
+entity "Route" as route {
+  * route_id : uuid
+  --
+  goals_id : uuid
+  overall_strategy : text
+}
+
+entity "DaySlot" as slot {
+  * id : uuid
+  --
+  route_id : uuid
+  day : int
+  type : enum
+  time : string
+  talk_id : string
+  reason : text
+  conflicts : string[]
+}
+
+track ||--o{ talk
+day ||--o{ talk
+goals }o--|| route
+route ||--o{ slot
+talk ||--o{ slot
+slot }o--o{ talk : conflicts >
+@enduml
+4. API — описание и эндпоинты
+
+4.1. Общие принципы
+
+Базовый URL: http://localhost:8000/api
+Формат: JSON, UTF-8.
+Аутентификация: отсутствует (хакатон).
+Ошибки: стандартный HTTP-код + {"detail": "..."}.
+4.2. Список эндпоинтов
+
+Метод	Путь	Назначение	Вход	Выход
+GET	/api/program	Отдать полное расписание на 2 дня	—	Talk[] + ConferenceDay[]
+GET	/api/tracks	Справочник 7 тем	—	Track[]
+GET	/api/talk/{id}	Детали доклада	id	Talk
+POST	/api/route	Построить маршрут по целям	UserGoals	Route
+GET	/api/route/{route_id}	Получить сохранённый маршрут	route_id	Route
+GET	/health	Проверка живости	—	{"status":"ok"}
+4.3. Swagger (OpenAPI 3.0)
+
+yaml
+openapi: 3.0.3
+info:
+  title: "Маршрут для участника конференции — API"
+  version: "1.0.0"
+  description: >
+    API для построения персонального маршрута по конференции AnalystDays.
+    Поддерживает 7 фиксированных тем, обязательный обеденный перерыв
+    и объяснение выбора докладов.
+servers:
+  - url: http://localhost:8000/api
+
+paths:
+  /program:
+    get:
+      summary: Полное расписание на 2 дня
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  days:
+                    type: array
+                    items: { $ref: '#/components/schemas/ConferenceDay' }
+                  talks:
+                    type: array
+                    items: { $ref: '#/components/schemas/Talk' }
+
+  /tracks:
+    get:
+      summary: Справочник 7 тем
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Track' }
+
+  /talk/{id}:
+    get:
+      summary: Детали доклада по ID
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema: { type: string }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Talk' }
+        '404':
+          description: Доклад не найден
+
+  /route:
+    post:
+      summary: Построить маршрут по целям участника
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/UserGoals' }
+      responses:
+        '200':
+          description: Маршрут построен
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Route' }
+        '422':
+          description: Некорректные данные (неизвестный track, несуществующий must_attend и т.п.)
+
+  /route/{route_id}:
+    get:
+      summary: Получить сохранённый маршрут
+      parameters:
+        - in: path
+          name: route_id
+          required: true
+          schema: { type: string, format: uuid }
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Route' }
+        '404':
+          description: Маршрут не найден
+
+  /health:
+    get:
+      summary: Проверка живости сервиса
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: { type: string, example: ok }
+
+components:
+  schemas:
+    Track:
+      type: string
+      enum: [processes, tools, career, ui_ux, clients_cases, architecture, data]
+      description: >
+        7 фиксированных тем. Соответствие: Процессы=processes, Инструменты=tools,
+        Карьера и развитие=career, UI/UX=ui_ux, Клиенты и кейсы=clients_cases,
+        Архитектура, методологии=architecture, Работа с данными=data.
+
+    Talk:
+      type: object
+      required: [id, title, speaker, track, day, start, end, room, format]
+      properties:
+        id: { type: string, example: talk_101 }
+        title: { type: string }
+        speaker: { type: string }
+        company: { type: string }
+        track: { $ref: '#/components/schemas/Track' }
+        day: { type: integer, enum: [1, 2] }
+        start: { type: string, example: "10:00" }
+        end:   { type: string, example: "10:40" }
+        room:  { type: string, example: "Секция A" }
+        format: { type: string, enum: [talk, workshop, roundtable] }
+        language: { type: string, enum: [ru, en] }
+        level: { type: string, enum: [junior, middle, senior, lead] }
+        tags: { type: array, items: { type: string } }
+        description_short: { type: string }
+
+    ConferenceDay:
+      type: object
+      properties:
+        day: { type: integer, enum: [1, 2] }
+        lunch_start: { type: string, example: "13:00" }
+        lunch_end:   { type: string, example: "14:00" }
+
+    UserGoals:
+      type: object
+      required: [priorities, experience_level]
+      properties:
+        priorities:
+          type: array
+          items: { $ref: '#/components/schemas/Track' }
+          minItems: 1
+        experience_level: { type: string, enum: [junior, middle, senior, lead] }
+        wants_workshops: { type: boolean, default: false }
+        max_walking: { type: string, enum: [low, medium, high], default: medium }
+        must_attend: { type: array, items: { type: string } }
+        avoid: { type: array, items: { type: string } }
+        language_pref: { type: string, enum: [ru, en, any], default: any }
+
+    DaySlot:
+      type: object
+      properties:
+        type: { type: string, enum: [talk, lunch, networking] }
+        time: { type: string, example: "10:00–10:40" }
+        talk: { allOf: [{ $ref: '#/components/schemas/Talk' }], nullable: true }
+        reason: { type: string }
+        conflicts: { type: array, items: { type: string } }
+
+    Route:
+      type: object
+      properties:
+        route_id: { type: string, format: uuid }
+        overall_strategy: { type: string }
+        days:
+          type: array
+          items:
+            type: object
+            properties:
+              day: { type: integer }
+              slots:
+                type: array
+                items: { $ref: '#/components/schemas/DaySlot' }
+4.4. Пример ответа /api/route
+
+json
+{
+  "route_id": "b1e2c3d4-...",
+  "overall_strategy": "Маршрут сфокусирован на темах «Карьера и развитие» и «Работа с данными». Включены два мастер-класса, обед сохранён в оба дня (13:00–14:00). Один must-attend конфликтует с обедом — оставлен с предупреждением.",
+  "days": [
+    {
+      "day": 1,
+      "slots": [
+        { "type": "talk", "time": "10:00–10:40",
+          "talk": { "id": "talk_101", "title": "Аттестация и карьерный рост", "track": "career", "...": "..." },
+          "reason": "Главный приоритет: карьера. Спикер близок к вашему уровню.",
+          "conflicts": ["talk_102"] },
+        { "type": "lunch", "time": "13:00–14:00",
+          "talk": null,
+          "reason": "Обеденный перерыв — 1 час по требованию.",
+          "conflicts": [] }
+      ]
+    }
+  ]
+}
+5. BPMN (PlantUML) — реальный процесс
+
+Схема отражает фактический флоу: форму с 7 темами → валидацию → скоринг → фиксацию обеда → выбор слотов → LLM-объяснения (с fallback) → рендер правой колонки.
+
+plantuml
+@startuml BPMN_Route_Real
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam defaultFontSize 11
+
+partition "Участник" {
+  start
+  :Открывает «Маршрут для участника конференции»;
+  :Заполняет форму:\n7 тем, уровень, must-attend;
+  :Нажимает «Построить маршрут»;
+  :Ожидает результат;
+  if (Маршрут устроил?) then (Да)
+    :Использует маршрут\nна конференции;
+    stop
+  else (Нет)
+    :Меняет приоритеты;
+  endif
+}
+
+partition "Frontend (React)" {
+  :Валидация формы\n(7 тем, обязательные поля);
+  if (Данные корректны?) then (Нет)
+    :Показать ошибки;
+  else (Да)
+    :POST /api/route;
+    :Показать скелетон;
+    :Получен ответ?;
+    if (Ошибка / таймаут?) then (Да)
+      :Экран ошибки + «Повторить»;
+    else (Нет)
+      :Левая колонка — форма;
+      :Правая колонка — таймлайн;
+      :StrategyBanner + ConflictBadge;
+    endif
+  endif
+}
+
+partition "Backend / Агент (FastAPI)" {
+  :Приём POST /api/route;
+  :Pydantic-валидация\n(7 track, must_attend);
+  if (must_attend\nсуществует?) then (Нет)
+    :422 — несуществующий ID;
+  else (Да)
+    :Загрузка program.json\n(Talk[], ConferenceDay[]);
+  endif
+  :Скоринг докладов:\n+3 главный трек, +1 второстепенный,\n+2 workshop, +100 must_attend,\n−100 avoid, штраф за переходы;
+  :Фиксация must_attend;
+  :Блокировка обеда\n(lunch_start–lunch_end)\nscore = −∞;
+  if (must_attend\nпересекает обед?) then (Да)
+    :conflict_reason =\n«пересекается с обедом»;
+  else (Нет)
+  endif
+  :Жадный выбор по слотам\nс бэктрекингом;
+  if (LLM доступен?) then (Да)
+    :LLM: reason + overall_strategy;
+  else (Нет)
+    :Шаблонные объяснения (fallback);
+  endif
+  :Вставка lunch-слота\nв каждый день;
+  :Формирование Route\n{route_id, days, strategy};
+  :200 OK → Frontend;
+}
+
+@enduml
+6. Sequence (PlantUML) — реальный процесс
+
+plantuml
+@startuml Seq_Route_Real
+!theme plain
+skinparam backgroundColor #FFFFFF
+autonumber
+
+actor "Участник" as U
+participant "Frontend\n(React)" as FE
+participant "Backend\n(FastAPI)" as BE
+participant "Program Store\n(program.json)" as PS
+participant "LLM API\n(optional)" as LLM
+
+U -> FE : Заполняет форму\n(7 тем, уровень, must-attend)
+U -> FE : «Построить маршрут»
+FE -> FE : Валидация (7 тем, обязательные поля)
+
+alt Данные некорректны
+  FE --> U : Ошибки валидации
+else Данные корректны
+  FE -> BE : POST /api/route {UserGoals}
+  BE -> BE : Pydantic-валидация
+  alt must_attend не существует
+    BE --> FE : 422 {detail}
+    FE --> U : Экран ошибки
+  else OK
+    BE -> PS : Загрузить Talk[] + ConferenceDay[]
+    PS --> BE : Расписание
+    BE -> BE : Скоринг докладов
+    BE -> BE : Фиксация must_attend
+    BE -> BE : Блокировка обеда (score = −∞)
+    BE -> BE : Жадный выбор + бэктрекинг
+    opt LLM доступен
+      BE -> LLM : Запрос reason + overall_strategy
+      LLM --> BE : Тексты объяснений
+    end
+    BE -> BE : Вставка lunch-слотов (1 ч/день)
+    BE -> BE : Сохранить Route (route_id)
+    BE --> FE : 200 OK {Route}
+    FE -> FE : Рендер: слева форма,\nсправа таймлайн
+    FE --> U : Маршрут + StrategyBanner + ConflictBadge
+    U -> FE : «Перестроить»
+    FE -> BE : POST /api/route (новые цели)
+  end
+end
+@enduml
+7. Frontend (краткие требования)
+
+Заголовок «Маршрут для участника конференции» в Header и <title>.
+Форма с 7 чекбоксами (BR-02) — слева, 40 % ширины.
+Правая колонка (60 %) — таймлайн маршрута, включая слот lunch (BR-04, BR-05).
+Палитра пастельная (BR-03), дизайн-токены:
+
+text
+bg #FAF7F2, surface #F3EDE4, accent #A8C3B0, accent2 #C9D6E8,
+text #3A3A3A, muted #8A8A8A
+Состояния: loading (скелетон), error (+ «Повторить»), success.
+Мобильный: форма сверху, маршрут снизу.
+8. Критерии приёмки (для демо)
+
+Заголовок «Маршрут для участника конференции» виден на всех экранах и во вкладке.
+В форме ровно 7 тем с указанными названиями.
+Палитра — пастельная (ревью скриншота).
+На десктопе маршрут — справа от формы.
+В каждом дне маршрута есть обеденный час; ни один доклад (кроме must_attend с предупреждением) с ним не пересекается.
+POST /api/route отвечает < 3 с без LLM / < 10 с с LLM.
+Swagger открывается на /docs и содержит все 6 эндпоинтов.
+При смене приоритетов маршрут меняется (видно на демо).
+ERD и диаграммы (BPMN, Sequence) приложены в репозитории.
+В сценарии демо «Junior, карьера + мастер-классы» маршрут содержит карьерные доклады и воркшопы, обед сохранён.

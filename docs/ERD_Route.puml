@@ -1,0 +1,74 @@
+@startuml ERD_Route
+!theme plain
+skinparam backgroundColor #FFFFFF
+skinparam linetype ortho
+
+entity "Track (enum)" as track {
+  * code : string
+  --
+  label : string
+}
+
+entity "ConferenceDay" as day {
+  * day : int
+  --
+  lunch_start : time
+  lunch_end : time
+}
+
+entity "Talk" as talk {
+  * id : string
+  --
+  title : string
+  speaker : string
+  company : string
+  track : Track
+  day : int
+  start : time
+  end : time
+  room : string
+  format : enum
+  language : enum
+  level : enum
+  tags : string[]
+  description_short : text
+}
+
+entity "UserGoals" as goals {
+  * id : uuid
+  --
+  priorities : Track[]
+  experience_level : enum
+  wants_workshops : bool
+  max_walking : enum
+  must_attend : string[]
+  avoid : string[]
+  language_pref : enum
+}
+
+entity "Route" as route {
+  * route_id : uuid
+  --
+  goals_id : uuid
+  overall_strategy : text
+}
+
+entity "DaySlot" as slot {
+  * id : uuid
+  --
+  route_id : uuid
+  day : int
+  type : enum
+  time : string
+  talk_id : string
+  reason : text
+  conflicts : string[]
+}
+
+track ||--o{ talk
+day ||--o{ talk
+goals }o--|| route
+route ||--o{ slot
+talk ||--o{ slot
+slot }o--o{ talk : conflicts
+@enduml

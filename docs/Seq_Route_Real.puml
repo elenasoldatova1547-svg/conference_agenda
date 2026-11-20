@@ -1,0 +1,44 @@
+@startuml Seq_Route_Real
+!theme plain
+skinparam backgroundColor #FFFFFF
+autonumber
+
+actor "Участник" as U
+participant "Frontend\n(React)" as FE
+participant "Backend\n(FastAPI)" as BE
+participant "Program Store\n(program.json)" as PS
+participant "LLM API\n(optional)" as LLM
+
+U -> FE : Заполняет форму\n(7 тем, уровень, must-attend)
+U -> FE : «Построить маршрут»
+FE -> FE : Валидация (7 тем, обязательные поля)
+
+alt Данные некорректны
+  FE --> U : Ошибки валидации
+else Данные корректны
+  FE -> BE : POST /api/route {UserGoals}
+  BE -> BE : Pydantic-валидация
+  alt must_attend не существует
+    BE --> FE : 422 {detail}
+    FE --> U : Экран ошибки
+  else OK
+    BE -> PS : Загрузить Talk[] + ConferenceDay[]
+    PS --> BE : Расписание
+    BE -> BE : Скоринг докладов
+    BE -> BE : Фиксация must_attend
+    BE -> BE : Блокировка обеда (score = −∞)
+    BE -> BE : Жадный выбор + бэктрекинг
+    opt LLM доступен
+      BE -> LLM : Запрос reason + overall_strategy
+      LLM --> BE : Тексты объяснений
+    end
+    BE -> BE : Вставка lunch-слотов (1 ч/день)
+    BE -> BE : Сохранить Route (route_id)
+    BE --> FE : 200 OK {Route}
+    FE -> FE : Рендер: слева форма,\nсправа таймлайн
+    FE --> U : Маршрут + StrategyBanner + ConflictBadge
+    U -> FE : «Перестроить»
+    FE -> BE : POST /api/route (новые цели)
+  end
+end
+@enduml

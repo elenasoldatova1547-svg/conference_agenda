@@ -1,0 +1,930 @@
+{
+  "days": [
+    {
+      "day": 1,
+      "lunch_start": "13:00",
+      "lunch_end": "14:00"
+    },
+    {
+      "day": 2,
+      "lunch_start": "13:00",
+      "lunch_end": "14:00"
+    }
+  ],
+  "talks": [
+    {
+      "id": "talk_101",
+      "title": "Картирование процессов End-to-End: с чего начать аналитику",
+      "speaker": "Иванов Алексей",
+      "company": "ФинТех",
+      "track": "processes",
+      "day": 1,
+      "start": "10:00",
+      "end": "10:40",
+      "room": "Секция A",
+      "format": "talk",
+      "language": "ru",
+      "level": "senior",
+      "tags": [
+        "process-mapping",
+        "e2e"
+      ],
+      "description_short": "Как начать картировать бизнес-процессы: от интуиции к данным"
+    },
+    {
+      "id": "talk_102",
+      "title": "Профессия «системный аналитик»: карьерная траектория",
+      "speaker": "Петрова Мария",
+      "company": "ДатаЛаб",
+      "track": "career",
+      "day": 1,
+      "start": "10:00",
+      "end": "10:40",
+      "room": "Секция B",
+      "format": "talk",
+      "language": "ru",
+      "level": "junior",
+      "tags": [
+        "career",
+        "roles"
+      ],
+      "description_short": "От стажёра до ведущего: что нужно знать на каждом этапе"
+    },
+    {
+      "id": "talk_103",
+      "title": "Качество данных: метрики и контроль",
+      "speaker": "Козлов Дмитрий",
+      "company": "CloudCo",
+      "track": "data",
+      "day": 1,
+      "start": "10:00",
+      "end": "10:40",
+      "room": "Секция C",
+      "format": "talk",
+      "language": "ru",
+      "level": "middle",
+      "tags": [
+        "data-quality",
+        "governance"
+      ],
+      "description_short": "Практические метрики качества и как их встроить в процесс"
+    },
+    {
+      "id": "talk_104",
+      "title": "Hands-on: нотация BPMN в практическом инструменте",
+      "speaker": "Сидоров Андрей",
+      "company": "МодельПро",
+      "track": "tools",
+      "day": 1,
+      "start": "10:00",
+      "end": "10:40",
+      "room": "Зал воркшопов",
+      "format": "workshop",
+      "language": "ru",
+      "level": "middle",
+      "tags": [
+        "bpmn",
+        "modeling"
+      ],
+      "description_short": "Создадим реальную модель процесса в рабочем инструменте"
+    },
+    {
+      "id": "talk_105",
+      "title": "UX-исследования для аналитика: как слушать пользователя",
+      "speaker": "Кузнецова Анна",
+      "company": "UX-Лаборатория",
+      "track": "ui_ux",
+      "day": 1,
+      "start": "10:50",
+      "end": "11:30",
+      "room": "Секция A",
+      "format": "talk",
+      "language": "ru",
+      "level": "middle",
+      "tags": [
+        "research",
+        "ux"
+      ],
+      "description_short": "Интервью, опросы, наблюдения: какие методы когда применять"
+    },
+    {
+      "id": "talk_106",
+      "title": "Микросервисы против монолита: выбор границы",
+      "speaker": "Новиков Сергей",
+      "company": "ИндустрияСофт",
+      "track": "architecture",
+      "day": 1,
+      "start": "10:50",
+      "end": "11:30",
+      "room": "Секция B",
+      "format": "talk",
+      "language": "ru",
+      "level": "senior",
+      "tags": [
+        "microservices",
+        "architecture"
+      ],
+      "description_short": "Как определить границы сервисов и не провалиться"
+    },
+    {
+      "id": "talk_107",
+      "title": "Как собирать требования у заказчика: живые кейсы",
+      "speaker": "Белова Ольга",
+      "company": "РитейлОнлайн",
+      "track": "clients_cases",
+      "day": 1,
+      "start": "10:50",
+      "end": "11:30",
+      "room": "Секция C",
+      "format": "talk",
+      "language": "ru",
+      "level": "junior",
+      "tags": [
+        "requirements",
+        "stakeholders"
+      ],
+      "description_short": "Реальные истории: от «мне нужен сайт» к формализованным требованиям"
+    },
+    {
+      "id": "talk_108",
+      "title": "Резюме и собеседование аналитика: разбор",
+      "speaker": "Морозова Елена",
+      "company": "HR-Аналитика",
+      "track": "career",
+      "day": 1,
+      "start": "10:50",
+      "end": "11:30",
+      "room": "Зал воркшопов",
+      "format": "workshop",
+      "language": "ru",
+      "level": "junior",
+      "tags": [
+        "career",
+        "interviews"
+      ],
+      "description_short": "Разберём резюме, подготовимся к техническому интервью"
+    },
+    {
+      "id": "talk_109",
+      "title": "Пайплайны данных: от источника до витрины",
+      "speaker": "Громов Виктор",
+      "company": "ДатаЛаб",
+      "track": "data",
+      "day": 1,
+      "start": "11:40",
+      "end": "12:20",
+      "room": "Секция A",
+      "format": "talk",
+      "language": "ru",
+      "level": "senior",
+      "tags": [
+        "pipelines",
+        "etl"
+      ],
+      "description_short": "Сквозной обзор: сбор, трансформация, витрины"
+    },
+    {
+      "id": "talk_110",
+      "title": "Круглый стол: автоматизация процессов в банке",
+      "speaker": "Группа спикеров",
+      "company": "ФинТех / Банксис",
+      "track": "processes",
+      "day": 1,
+      "start": "11:40",
+      "end": "12:20",
+      "room": "Секция B",
+      "format": "roundtable",
+      "language": "ru",
+      "level": "middle",
+      "tags": [
+        "automation",
+        "banking"
+      ],
+      "description_short": "Обсуждение: как автоматизация меняет роль аналитика в финсекторе"
+    },
+    {
+      "id": "talk_111",
+      "title": "Топ-инструменты аналитика 2025",
+      "speaker": "Крылов Павел",
+      "company": "ИнструментПлюс",
+      "track": "tools",
+      "day": 1,
+      "start": "11:40",
+      "end": "12:20",
+      "room": "Секция C",
+      "format": "talk",
+      "language": "ru",
+      "level": "junior",
+      "tags": [
+        "tools",
+        "overview"
+      ],
+      "description_short": "Обзор актуальных инструментов для аналитики и моделирования"
+    },
+    {
+      "id": "talk_112",
+      "title": "Из аналитика в лиды: первые шаги",
+      "speaker": "Семёнов Игорь",
+      "company": "ДатаЛаб",
+      "track": "career",
+      "day": 1,
+      "start": "14:00",
+      "end": "14:40",
+      "room": "Секция A",
+      "format": "talk",
+      "language": "ru",
+      "level": "middle",
+      "tags": [
+        "career",
+        "management"
+      ],
+      "description_short": "Технические и soft-skill навыки для перехода в управление"
+    },
+    {
+      "id": "talk_113",
+      "title": "Прототипирование интерфейсов за час",
+      "speaker": "Жукова Татьяна",
+      "company": "UX-Лаборатория",
+      "track": "ui_ux",
+      "day": 1,
+      "start": "14:00",
+      "end": "14:40",
+      "room": "Секция B",
+      "format": "workshop",
+      "language": "ru",
+      "level": "middle",
+      "tags": [
+        "prototyping",
+        "ux"
+      ],
+      "description_short": "Создадим кликабельный прототип Figma с нуля"
+    },
+    {
+      "id": "talk_114",
+      "title": "Архитектурные решения и ADR: как документировать выбор",
+      "speaker": "Орлов Максим",
+      "company": "ИндустрияСофт",
+      "track": "architecture",
+      "day": 1,
+      "start": "14:00",
+      "end": "14:40",
+      "room": "Секция C",
+      "format": "talk",
+      "language": "ru",
+      "level": "lead",
+      "tags": [
+        "adr",
+        "documentation"
+      ],
+      "description_short": "ADR как инструмент прозрачности и коммуникации"
+    },
+    {
+      "id": "talk_115",
+      "title": "SQL для аналитика: практика",
+      "speaker": "Тихонов Роман",
+      "company": "CloudCo",
+      "track": "data",
+      "day": 1,
+      "start": "14:00",
+      "end": "14:40",
+      "room": "Зал воркшопов",
+      "format": "workshop",
+      "language": "ru",
+      "level": "junior",
+      "tags": [
+        "sql",
+        "practice"
+      ],
+      "description_short": "Запросы, джоины, оконные функции — пишем SQL в реальном наборе данных"
+    },
+    {
+      "id": "talk_116",
+      "title": "Кейс: внедрение CRM с нуля в среднем бизнесе",
+      "speaker": "Федорова Наталья",
+      "company": "РитейлОнлайн",
+      "track": "clients_cases",
+      "day": 1,
+      "start": "14:50",
+      "end": "15:30",
+      "room": "Секция A",
+      "format": "talk",
+      "language": "ru",
+      "level": "senior",
+      "tags": [
+        "crm",
+        "implementation"
+      ],
+      "description_short": "Полный цикл: от сбора требований до запуска и поддержки"
+    },
+    {
+      "id": "talk_117",
+      "title": "BPMN 2.0 на практике: подводные камни и лайфхаки",
+      "speaker": "Егоров Артём",
+      "company": "МодельПро",
+      "track": "processes",
+      "day": 1,
+      "start": "14:50",
+      "end": "15:30",
+      "room": "Секция B",
+      "format": "talk",
+      "language": "ru",
+      "level": "middle",
+      "tags": [
+        "bpmn",
+        "best-practices"
+      ],
+      "description_short": "Где ошибаются новички и как их избежать"
+    },
+    {
+      "id": "talk_118",
+      "title": "Круглый стол: менторство и рост в аналитике",
+      "speaker": "Группа спикеров",
+      "company": "ДатаЛаб / ФинТех",
+      "track": "career",
+      "day": 1,
+      "start": "14:50",
+      "end": "15:30",
+      "room": "Секция C",
+      "format": "roundtable",
+      "language": "ru",
+      "level": "junior",
+      "tags": [
+        "career",
+        "mentorship"
+      ],
+      "description_short": "Опыт менторства: что помогает, а что мешает"
+    },
+    {
+      "id": "talk_119",
+      "title": "Автоматизация рутин: low-code для аналитиков",
+      "speaker": "Власов Никита",
+      "company": "ИнструментПлюс",
+      "track": "tools",
+      "day": 1,
+      "start": "15:40",
+      "end": "16:20",
+      "room": "Секция A",
+      "format": "talk",
+      "language": "ru",
+      "level": "senior",
+      "tags": [
+        "low-code",
+        "automation"
+      ],
+      "description_short": "Когда low-code уместен, а когда — нет"
+    },
+    {
+      "id": "talk_120",
+      "title": "Основы визуализации данных: от таблицы к дашборду",
+      "speaker": "Андреева Ксения",
+      "company": "CloudCo",
+      "track": "data",
+      "day": 1,
+      "start": "15:40",
+      "end": "16:20",
+      "room": "Секция B",
+      "format": "talk",
+      "language": "ru",
+      "level": "junior",
+      "tags": [
+        "visualization",
+        "dashboards"
+      ],
+      "description_short": "Принципы чистых дашбордов: что показывать и как не перегружать"
+    },
+    {
+      "id": "talk_121",
+      "title": "Design systems: the analyst's role in building them",
+      "speaker": "James Wilson",
+      "company": "UX-Global",
+      "track": "ui_ux",
+      "day": 1,
+      "start": "15:40",
+      "end": "16:20",
+      "room": "Секция C",
+      "format": "talk",
+      "language": "en",
+      "level": "senior",
+      "tags": [
+        "design-systems",
+        "collaboration"
+      ],
+      "description_short": "How analysts bridge the gap between design and engineering"
+    },
+    {
+      "id": "talk_122",
+      "title": "Воркшоп: декомпозиция предметной области",
+      "speaker": "Громов Виктор",
+      "company": "ДатаЛаб",
+      "track": "architecture",
+      "day": 1,
+      "start": "16:30",
+      "end": "17:10",
+      "room": "Секция A",
+      "format": "workshop",
+      "language": "ru",
+      "level": "senior",
+      "tags": [
+        "boc",
+        "domain-modeling"
+      ],
+      "description_short": "Разберём реальный кейс декомпозиции на практике"
+    },
+    {
+      "id": "talk_123",
+      "title": "Кейс-разбор: провалы и уроки",
+      "speaker": "Группа спикеров",
+      "company": "РитейлОнлайн / ФинТех",
+      "track": "clients_cases",
+      "day": 1,
+      "start": "16:30",
+      "end": "17:10",
+      "room": "Секция B",
+      "format": "roundtable",
+      "language": "ru",
+      "level": "middle",
+      "tags": [
+        "lessons-learned",
+        "cases"
+      ],
+      "description_short": "Анонимные разборы проваленных проектов и выводы"
+    },
+    {
+      "id": "talk_124",
+      "title": "Скиллы junior-аналитика: что реально нужно в работе",
+      "speaker": "Петрова Мария",
+      "company": "ДатаЛаб",
+      "track": "career",
+      "day": 1,
+      "start": "16:30",
+      "end": "17:10",
+      "room": "Секция C",
+      "format": "talk",
+      "language": "ru",
+      "level": "junior",
+      "tags": [
+        "skills",
+        "junior"
+      ],
+      "description_short": "Hard и soft skills: рейтинг полезности в повседневной работе"
+    },
+    {
+      "id": "talk_125",
+      "title": "Process mining: данные о процессах как источник инсайтов",
+      "speaker": "Сидоров Андрей",
+      "company": "МодельПро",
+      "track": "processes",
+      "day": 2,
+      "start": "10:00",
+      "end": "10:40",
+      "room": "Секция A",
+      "format": "talk",
+      "language": "ru",
+      "level": "middle",
+      "tags": [
+        "process-mining",
+        "data"
+      ],
+      "description_short": "Как из логов и транзакций извлечь реальный процесс"
+    },
+    {
+      "id": "talk_126",
+      "title": "Как проходить техническое интервью аналитика",
+      "speaker": "Морозова Елена",
+      "company": "HR-Аналитика",
+      "track": "career",
+      "day": 2,
+      "start": "10:00",
+      "end": "10:40",
+      "room": "Секция B",
+      "format": "talk",
+      "language": "ru",
+      "level": "junior",
+      "tags": [
+        "interviews",
+        "career"
+      ],
+      "description_short": "Разбор типичных вопросов и подготовка к ним"
+    },
+    {
+      "id": "talk_127",
+      "title": "Инструменты моделирования данных: ERD, DFD, UML",
+      "speaker": "Крылов Павел",
+      "company": "ИнструментПлюс",
+      "track": "tools",
+      "day": 2,
+      "start": "10:00",
+      "end": "10:40",
+      "room": "Секция C",
+      "format": "talk",
+      "language": "ru",
+      "level": "middle",
+      "tags": [
+        "modeling",
+        "er-diagram"
+      ],
+      "description_short": "Сравнение подходов к моделированию данных"
+    },
+    {
+      "id": "talk_128",
+      "title": "Юзабилити-тест своими руками: с чего начать",
+      "speaker": "Кузнецова Анна",
+      "company": "UX-Лаборатория",
+      "track": "ui_ux",
+      "day": 2,
+      "start": "10:00",
+      "end": "10:40",
+      "room": "Зал воркшопов",
+      "format": "workshop",
+      "language": "ru",
+      "level": "junior",
+      "tags": [
+        "usability",
+        "testing"
+      ],
+      "description_short": "Проведём мини-тест на 10 участниках и сделаем выводы"
+    },
+    {
+      "id": "talk_129",
+      "title": "Хранилища данных: звёздная схема и не только",
+      "speaker": "Козлов Дмитрий",
+      "company": "CloudCo",
+      "track": "data",
+      "day": 2,
+      "start": "10:50",
+      "end": "11:30",
+      "room": "Секция A",
+      "format": "talk",
+      "language": "ru",
+      "level": "senior",
+      "tags": [
+        "data-warehouse",
+        "modeling"
+      ],
+      "description_short": "Сравнение схем: звезда, снежинка,Data Vault"
+    },
+    {
+      "id": "talk_130",
+      "title": "Интеграции: REST, очереди, события — что выбрать",
+      "speaker": "Новиков Сергей",
+      "company": "ИндустрияСофт",
+      "track": "architecture",
+      "day": 2,
+      "start": "10:50",
+      "end": "11:30",
+      "room": "Секция B",
+      "format": "talk",
+      "language": "ru",
+      "level": "senior",
+      "tags": [
+        "integration",
+        "api"
+      ],
+      "description_short": "Когда REST, когда Kafka, когда message bus"
+    },
+    {
+      "id": "talk_131",
+      "title": "Presenting solutions to stakeholders: a practical guide",
+      "speaker": "Sarah Chen",
+      "company": "UX-Global",
+      "track": "clients_cases",
+      "day": 2,
+      "start": "10:50",
+      "end": "11:30",
+      "room": "Секция C",
+      "format": "talk",
+      "language": "en",
+      "level": "junior",
+      "tags": [
+        "presentation",
+        "stakeholders"
+      ],
+      "description_short": "How to translate technical details into business value"
+    },
+    {
+      "id": "talk_132",
+      "title": "Воркшоп: карьерный план на год для аналитика",
+      "speaker": "Семёнов Игорь",
+      "company": "ДатаЛаб",
+      "track": "career",
+      "day": 2,
+      "start": "11:40",
+      "end": "12:20",
+      "room": "Секция A",
+      "format": "workshop",
+      "language": "ru",
+      "level": "junior",
+      "tags": [
+        "career",
+        "planning"
+      ],
+      "description_short": "Построим персональный план развития с метриками"
+    },
+    {
+      "id": "talk_133",
+      "title": "Accessibility в корпоративных системах: требования и практика",
+      "speaker": "Жукова Татьяна",
+      "company": "UX-Лаборатория",
+      "track": "ui_ux",
+      "day": 2,
+      "start": "11:40",
+      "end": "12:20",
+      "room": "Секция B",
+      "format": "talk",
+      "language": "ru",
+      "level": "middle",
+      "tags": [
+        "a11y",
+        "accessibility"
+      ],
+      "description_short": "WCAG, проверки, интеграция в процесс разработки"
+    },
+    {
+      "id": "talk_134",
+      "title": "Регламенты и SOP: как внедрить без саботажа",
+      "speaker": "Егоров Артём",
+      "company": "МодельПро",
+      "track": "processes",
+      "day": 2,
+      "start": "11:40",
+      "end": "12:20",
+      "room": "Секция C",
+      "format": "talk",
+      "language": "ru",
+      "level": "senior",
+      "tags": [
+        "sop",
+        "change-management"
+      ],
+      "description_short": "Как сделать так, чтобы регламенты читали и соблюдали"
+    },
+    {
+      "id": "talk_135",
+      "title": "Workflow-автоматизация: hands-on с open-source",
+      "speaker": "Власов Никита",
+      "company": "ИнструментПлюс",
+      "track": "tools",
+      "day": 2,
+      "start": "14:00",
+      "end": "14:40",
+      "room": "Секция A",
+      "format": "workshop",
+      "language": "ru",
+      "level": "middle",
+      "tags": [
+        "automation",
+        "workflow"
+      ],
+      "description_short": "Создадим workflow от триггера до отчёта"
+    },
+    {
+      "id": "talk_136",
+      "title": "Знакомство с Python для аналитика: от нуля до pandas",
+      "speaker": "Тихонов Роман",
+      "company": "CloudCo",
+      "track": "data",
+      "day": 2,
+      "start": "14:00",
+      "end": "14:40",
+      "room": "Секция B",
+      "format": "talk",
+      "language": "ru",
+      "level": "junior",
+      "tags": [
+        "python",
+        "pandas"
+      ],
+      "description_short": "Быстрый старт: установка, Jupyter, первые запросы к данным"
+    },
+    {
+      "id": "talk_137",
+      "title": "Круглый стол: технический долг — как управлять",
+      "speaker": "Группа спикеров",
+      "company": "ИндустрияСофт / CloudCo",
+      "track": "architecture",
+      "day": 2,
+      "start": "14:00",
+      "end": "14:40",
+      "room": "Секция C",
+      "format": "roundtable",
+      "language": "ru",
+      "level": "lead",
+      "tags": [
+        "tech-debt",
+        "architecture"
+      ],
+      "description_short": "Как измерять, приоритизировать и снижать техдолг"
+    },
+    {
+      "id": "talk_138",
+      "title": "Кейс: миграция на новую платформу без остановки бизнеса",
+      "speaker": "Федорова Наталья",
+      "company": "РитейлОнлайн",
+      "track": "clients_cases",
+      "day": 2,
+      "start": "14:50",
+      "end": "15:30",
+      "room": "Секция A",
+      "format": "talk",
+      "language": "ru",
+      "level": "middle",
+      "tags": [
+        "migration",
+        "planning"
+      ],
+      "description_short": "Этапы миграции, риски и как их минимизировать"
+    },
+    {
+      "id": "talk_139",
+      "title": "Грейды и метрики компетенций: как устроено в компаниях",
+      "speaker": "Морозова Елена",
+      "company": "HR-Аналитика",
+      "track": "career",
+      "day": 2,
+      "start": "14:50",
+      "end": "15:30",
+      "room": "Секция B",
+      "format": "talk",
+      "language": "ru",
+      "level": "middle",
+      "tags": [
+        "grades",
+        "competencies"
+      ],
+      "description_short": "Обзор практик грейдов в IT-компаниях России"
+    },
+    {
+      "id": "talk_140",
+      "title": "UX-метрики: NPS, SUS, retention — как считать и использовать",
+      "speaker": "Кузнецова Анна",
+      "company": "UX-Лаборатория",
+      "track": "ui_ux",
+      "day": 2,
+      "start": "14:50",
+      "end": "15:30",
+      "room": "Секция C",
+      "format": "workshop",
+      "language": "ru",
+      "level": "senior",
+      "tags": [
+        "metrics",
+        "ux"
+      ],
+      "description_short": "Практика: соберём метрики на реальном продукте"
+    },
+    {
+      "id": "talk_141",
+      "title": "Воркшоп: AS-IS → TO-BE для реального процесса",
+      "speaker": "Громов Виктор",
+      "company": "ДатаЛаб",
+      "track": "processes",
+      "day": 2,
+      "start": "15:40",
+      "end": "16:20",
+      "room": "Секция A",
+      "format": "workshop",
+      "language": "ru",
+      "level": "middle",
+      "tags": [
+        "as-is",
+        "to-be"
+      ],
+      "description_short": "Разберём реальный кейс AS-IS и наметим TO-BE"
+    },
+    {
+      "id": "talk_142",
+      "title": "Data Quality в проде: мониторинг и алерты",
+      "speaker": "Козлов Дмитрий",
+      "company": "CloudCo",
+      "track": "data",
+      "day": 2,
+      "start": "15:40",
+      "end": "16:20",
+      "room": "Секция B",
+      "format": "talk",
+      "language": "ru",
+      "level": "senior",
+      "tags": [
+        "data-quality",
+        "monitoring"
+      ],
+      "description_short": "Как настроить мониторинг качества данных на каждом этапе"
+    },
+    {
+      "id": "talk_143",
+      "title": "No-code для прототипов: когда это работает",
+      "speaker": "Крылов Павел",
+      "company": "ИнструментПлюс",
+      "track": "tools",
+      "day": 2,
+      "start": "15:40",
+      "end": "16:20",
+      "room": "Секция C",
+      "format": "talk",
+      "language": "ru",
+      "level": "junior",
+      "tags": [
+        "no-code",
+        "prototyping"
+      ],
+      "description_short": "Инструменты без кода: Tilda, Bubble, Glide — сравнение"
+    },
+    {
+      "id": "talk_144",
+      "title": "Отказоустойчивость простыми словами: для аналитиков",
+      "speaker": "Новиков Сергей",
+      "company": "ИндустрияСофт",
+      "track": "architecture",
+      "day": 2,
+      "start": "16:30",
+      "end": "17:10",
+      "room": "Секция A",
+      "format": "talk",
+      "language": "ru",
+      "level": "senior",
+      "tags": [
+        "reliability",
+        "basics"
+      ],
+      "description_short": "SLA, SLI, SLO: что нужно знать аналитику"
+    },
+    {
+      "id": "talk_145",
+      "title": "Круглый стол: первый год в профессии — чек-лист",
+      "speaker": "Группа спикеров",
+      "company": "ДатаЛаб / HR-Аналитика",
+      "track": "career",
+      "day": 2,
+      "start": "16:30",
+      "end": "17:10",
+      "room": "Секция B",
+      "format": "roundtable",
+      "language": "ru",
+      "level": "junior",
+      "tags": [
+        "career",
+        "checklist"
+      ],
+      "description_short": "Что важно сделать за первый год и чего избегать"
+    },
+    {
+      "id": "talk_146",
+      "title": "Работа с возражениями заказчика: техники и примеры",
+      "speaker": "Белова Ольга",
+      "company": "РитейлОнлайн",
+      "track": "clients_cases",
+      "day": 2,
+      "start": "16:30",
+      "end": "17:10",
+      "room": "Секция C",
+      "format": "talk",
+      "language": "ru",
+      "level": "senior",
+      "tags": [
+        "objections",
+        "communication"
+      ],
+      "description_short": "Как работать с «не надо», «дорого» и «мы так не делаем»"
+    },
+    {
+      "id": "talk_147",
+      "title": "Нетворкинг-обед: карьерные вопросы 1:1 со спикерами",
+      "speaker": "Петрова Мария",
+      "company": "ДатаЛаб",
+      "track": "career",
+      "day": 1,
+      "start": "12:40",
+      "end": "13:40",
+      "room": "Зал воркшопов",
+      "format": "roundtable",
+      "language": "ru",
+      "level": "junior",
+      "tags": [
+        "career",
+        "networking",
+        "lunch-overlap"
+      ],
+      "description_short": "Удлинённый формат: общение со спикерами за обедом (пересекает 13:00–14:00)"
+    },
+    {
+      "id": "talk_148",
+      "title": "Углублённый практикум по данным (удлинённый слот)",
+      "speaker": "Козлов Дмитрий",
+      "company": "CloudCo",
+      "track": "data",
+      "day": 2,
+      "start": "12:40",
+      "end": "13:40",
+      "room": "Зал воркшопов",
+      "format": "workshop",
+      "language": "ru",
+      "level": "middle",
+      "tags": [
+        "data",
+        "practice",
+        "lunch-overlap"
+      ],
+      "description_short": "Долгий практикум, захватывающий обеденное окно (пересекает 13:00–14:00)"
+    }
+  ]
+}
