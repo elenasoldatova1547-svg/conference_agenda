@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "https://conference-agenda-back.relaxdev.ru"
+    }
+  ]
+}

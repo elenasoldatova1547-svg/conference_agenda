@@ -2,6 +2,9 @@
 node_modules/
 dist/
 
+# Генерируется при Docker-сборке (scripts/bake-rewrites.mjs)
+nginx.conf.generated.template
+
 # Локальное
 .DS_Store
 .env

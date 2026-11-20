@@ -1,7 +1,8 @@
 import type { Program, Route, TrackInfo, UserGoals } from './types'
 
-/** Базовый URL API. В dev пустой → относительные пути идут через Vite-прокси. */
-const BASE = (import.meta.env.VITE_API_BASE ?? '').replace(/\/$/, '')
+/** Адрес API не задаётся в коде — используется относительный путь.
+ * В dev Vite проксирует /api/* → localhost:8000, на RelaxDev проксирует nginx. */
+const BASE = ''
 
 export class ApiError extends Error {
   status: number
@@ -20,7 +21,7 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
       ...init,
     })
   } catch {
-    throw new ApiError(0, 'Сервис недоступен. Проверьте, что backend запущен на порту 8000.')
+    throw new ApiError(0, 'Сервис недоступен.')
   }
 
   if (!res.ok) {

@@ -64,3 +64,32 @@ npm run build      # tsc --noEmit + vite build → dist/
 | 4 | Маршрут справа от формы (≥1024px) | `.layout` grid 2fr/3fr, sticky-колонка |
 | 5 | Мобильный стек: форма сверху, маршрут снизу | media-query в `.layout` |
 | 6 | Состояния loading/error/success | `App.tsx` + `RouteTimeline.tsx` (скелетон, «Повторить») |
+
+---
+
+## Деплой на RelaxDev (frontend)
+
+Фронтенд собирается в Docker-образ с nginx, который раздаёт статику и проксирует
+`/api/*` на бэкенд. Это необходимо: RelaxDev не читает `vercel.json` и не делает
+rewrite на своей стороне — трафик сразу попадает в контейнер.
+
+### Что настраивается
+
+| Файл | Назначение |
+|------|------------|
+| `rewrites.json` | Адрес бэкенда: `https://conference-agenda-back.relaxdev.ru` |
+| `scripts/bake-rewrites.mjs` | Подставляет адрес в шаблон nginx |
+| `nginx.conf.template` | Шаблон конфигурации nginx с плейсхолдером `__BACKEND_URL__` |
+| `Dockerfile` | Сборка: `node:20` собирает Vite, `nginx:1.27` раздаёт статику |
+
+### Панель RelaxDev
+
+1. Новый проект из этого репозитория, стек — **«Свой Dockerfile»**, путь к Dockerfile — корень.
+2. Переменные окружения **не добавлять** (адрес бэкенда зашивается в образ на сборке).
+3. Деплой. После любой правки `rewrites.json` или `nginx.conf.template` — полный редеплой без кэша Docker.
+
+### Проверка после деплоя
+
+- Открыть `https://conference-agenda.relaxdev.ru`, DevTools → Network → запрос `/api/health`
+  должен вернуть JSON `{"status":"ok"}`.
+- Swagger доступен по `/api/docs` (проксируется nginx'ом на Swagger бэкенда).
