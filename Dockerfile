@@ -1,18 +1,20 @@
-# 1) Node собирает Vite-бандл и baking'ит nginx-конфиг с адресом бэкенда
+# 1) Node собирает Next.js (output: "standalone" → .next/standalone/server.js)
 FROM node:20-alpine AS build
 WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
-RUN node scripts/bake-rewrites.mjs
 RUN npm run build
 
-# 2) nginx раздаёт статику и проксирует /api/* на бэкенд
-FROM nginx:1.27-alpine
-COPY --from=build /app/nginx.conf.generated.template /etc/nginx/templates/default.conf.template
-COPY --from=build /app/dist /usr/share/nginx/html
+# 2) Запускаем standalone-сервер: он сам слушает PORT и проксирует /api/* на бэкенд
+FROM node:20-alpine
+WORKDIR /app
+ENV NODE_ENV=production
+# Next standalone server.js читает HOSTNAME/PORT.
+# HOSTNAME=0.0.0.0 обязателен в контейнере, иначе bind падает на hostname контейнера.
+ENV HOSTNAME=0.0.0.0
 ENV PORT=8080
-# ОБЯЗАТЕЛЬНО: envsubst в официальном образе подставляет только PORT,
-# иначе затрёт переменные самого nginx ($uri, $proxy_host, ...).
-ENV NGINX_ENVSUBST_FILTER=PORT
+COPY --from=build /app/.next/standalone ./
+COPY --from=build /app/.next/static ./.next/static
 EXPOSE 8080
+CMD ["node", "server.js"]

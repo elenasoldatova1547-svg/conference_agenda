@@ -1,8 +1,7 @@
 import type { Program, Route, TrackInfo, UserGoals } from './types'
 
-/** Адрес API не задаётся в коде — используется относительный путь.
- * В dev Vite проксирует /api/* → localhost:8000, на RelaxDev проксирует nginx. */
-const BASE = ''
+/** Адрес API не задаётся в коде — относительный путь /api/*,
+ * который Next.js проксирует на бэкенд через rewrites в next.config.ts. */
 
 export class ApiError extends Error {
   status: number
@@ -16,7 +15,7 @@ export class ApiError extends Error {
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   let res: Response
   try {
-    res = await fetch(`${BASE}${path}`, {
+    res = await fetch(path, {
       headers: { 'Content-Type': 'application/json' },
       ...init,
     })

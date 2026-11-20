@@ -1,4 +1,6 @@
-import type { Route, Track } from '../types'
+'use client'
+
+import type { Route, Track } from '../lib/types'
 
 type Status = 'idle' | 'loading' | 'error' | 'success'
 

@@ -1,5 +1,7 @@
+'use client'
+
 import { useMemo, useState } from 'react'
-import type { Level, Talk, Track, TrackInfo, UserGoals, Walking, LanguagePref } from '../types'
+import type { Level, Talk, Track, TrackInfo, UserGoals, Walking, LanguagePref } from '../lib/types'
 
 interface Props {
   tracks: TrackInfo[]

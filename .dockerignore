@@ -1,9 +1,8 @@
 node_modules
-dist
+.next
 .git
 .env
 .env.*
 !.env.example
-nginx.conf.generated.template
 Dockerfile
 .dockerignore
